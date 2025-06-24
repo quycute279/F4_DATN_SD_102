@@ -6,7 +6,19 @@ namespace F4_API.DATA
 {
     public class AppDbContext :DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        protected AppDbContext()
+        {
+        }
+       
+
+        public AppDbContext(DbContextOptions options) : base(options)
+        {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=DATN_SD_102;Trusted_Connection=True;Integrated Security=True;TrustServerCertificate=True");
+        }
 
         public DbSet<TaiKhoan> TaiKhoans { get; set; }
         public DbSet<ChucVu> ChucVus { get; set; }

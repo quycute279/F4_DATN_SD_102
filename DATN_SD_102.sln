@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F4_API", "DATN_SD_102\F4_API.csproj", "{DF0F6494-AD76-4D44-B619-155F494A11AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web_DATN", "Web_DATN\Web_DATN.csproj", "{8FFE2F7F-DECF-41A2-9371-E36BED6E8B9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{DF0F6494-AD76-4D44-B619-155F494A11AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF0F6494-AD76-4D44-B619-155F494A11AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF0F6494-AD76-4D44-B619-155F494A11AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FFE2F7F-DECF-41A2-9371-E36BED6E8B9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FFE2F7F-DECF-41A2-9371-E36BED6E8B9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FFE2F7F-DECF-41A2-9371-E36BED6E8B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FFE2F7F-DECF-41A2-9371-E36BED6E8B9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5249400-1938-451F-976F-74F625E55847}
 	EndGlobalSection
 EndGlobal
