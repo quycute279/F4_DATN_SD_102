@@ -12,6 +12,5 @@ namespace F4_API.Models
         public bool TrangThai { get; set; }
         public Guid? LinhKienCtId { get; set; }
         public virtual LinhKienCT? LinhKien { get; set; }
-        //public ICollection<LinhKienCT>? LinhKienCTs { get; set; }
     }
 }

@@ -33,19 +33,29 @@ namespace F4_API.Repository
                 .Include(x => x.DotGiamGias)
                 .FirstOrDefaultAsync(x => x.LkId == id);
         }
-
-        public async Task AddAsync(LinhKien linhKien)
+        public async Task<LinhKien> AddAsync(LinhKien linhKien)
         {
-            await _context.LinhKiens.AddAsync(linhKien);
+            linhKien.LkId = Guid.NewGuid();
+            linhKien.TrangThai = true;
+            _context.LinhKiens.Add(linhKien);
             await _context.SaveChangesAsync();
+            return linhKien;
         }
 
-        public async Task UpdateAsync(LinhKien linhKien)
+        public async Task<LinhKien> UpdateAsync(LinhKien linhKien)
         {
-            _context.LinhKiens.Update(linhKien);
-            await _context.SaveChangesAsync();
-        }
+            var existing = await _context.LinhKiens.FindAsync(linhKien.LkId);
+            if (existing == null) return null;
 
+            existing.TenLinhKien = linhKien.TenLinhKien;
+            existing.TrangThai = linhKien.TrangThai;
+            existing.DanhMucId = linhKien.DanhMucId;
+            existing.Gia = linhKien.Gia;
+            existing.MoTa = linhKien.MoTa;
+
+            await _context.SaveChangesAsync();
+            return existing;
+        }
         public async Task DeleteAsync(Guid id)
         {
             var entity = await GetByIdAsync(id);
@@ -70,5 +80,6 @@ namespace F4_API.Repository
                 .Where(nv => nv.TenLinhKien.ToLower().Contains(keyword))
                 .ToListAsync();
         }
+
     }
 }
