@@ -12,6 +12,7 @@ using F4_API.Models.DTO;
 
 namespace F4_API.Controllers
 {
+    //hahah
     [Route("api/[controller]")]
     [ApiController]
     public class LinhKienController : ControllerBase
