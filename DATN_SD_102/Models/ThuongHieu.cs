@@ -6,6 +6,8 @@ namespace F4_API.Models
     {
         [Key]
         public Guid ThuongHieuId { get; set; }
+        [Required(ErrorMessage = "Họ tên không được để trống")]
+        [StringLength(100, ErrorMessage = "Họ tên tối đa 100 ký tự")]
         public string TenThuongHieu { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Sdt { get; set; } = null!;
