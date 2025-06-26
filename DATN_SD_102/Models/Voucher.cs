@@ -6,15 +6,34 @@ namespace F4_API.Models
     {
         [Key]
         public Guid VoucherId { get; set; }
-        public string TenVoucher { get; set; } = null!;
-        public DateTime NgayBatDau { get; set; }
-        public DateTime NgayKetThuc { get; set; }
-        public double PhanTram { get; set; }
-        public bool TrangThai { get; set; }
-        public int SoLuong { get; set; }
-        public Guid? TaiKhoanId { get; set; }
 
-        public TaiKhoan? TaiKhoan { get; set; }
-        public ICollection<HoaDon>? HoaDons { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string TenVoucher { get; set; }
+
+        [Required]
+        public DateTime NgayBatDau { get; set; }
+
+        [Required]
+        public DateTime NgayKetThuc { get; set; }
+
+        [Range(0, 100)]
+        public float PhanTram { get; set; }
+
+        public bool TrangThai { get; set; }
+
+        public int SoLuong { get; set; }
+
+        public Guid? IdTaiKhoan { get; set; }
+
+        public void Validate()
+        {
+            if (NgayBatDau.Date < DateTime.Today)
+                throw new Exception("Ngày bắt đầu không hợp lệ.");
+            if (NgayKetThuc <= NgayBatDau)
+                throw new Exception("Ngày kết thúc phải sau ngày bắt đầu.");
+        }
+        public virtual TaiKhoan? TaiKhoan { get; set; }
+        public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
     }
 }

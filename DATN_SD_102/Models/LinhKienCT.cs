@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace F4_API.Models
 {
@@ -14,9 +15,8 @@ namespace F4_API.Models
         public string? MoTa { get; set; }
         public bool? TrangThai { get; set; }
 
-        public LinhKien? LinhKien { get; set; }
+        public virtual ICollection<HinhAnh>? HinhAnhs { get; set; } = new List<HinhAnh>();
         public DanhMuc_LinhKien_ThuocTinh? ThuocTinh { get; set; }
-        public HinhAnh? HinhAnh { get; set; }
         public ThuongHieu? ThuongHieu { get; set; }
     }
 }

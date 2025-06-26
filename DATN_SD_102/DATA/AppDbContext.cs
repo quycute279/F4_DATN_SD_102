@@ -20,6 +20,7 @@ namespace F4_API.DATA
             optionsBuilder.UseSqlServer(@"Data Source=.\SQLEXPRESS;Initial Catalog=DATN_SD_102;Trusted_Connection=True;Integrated Security=True;TrustServerCertificate=True");
         }
 
+
         public DbSet<TaiKhoan> TaiKhoans { get; set; }
         public DbSet<ChucVu> ChucVus { get; set; }
         public DbSet<NhanVien> NhanViens { get; set; }
@@ -69,6 +70,50 @@ namespace F4_API.DATA
                 .HasForeignKey(x => x.LinhKienId);
 
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<ChucVu>().HasData(
+             new ChucVu
+             {
+                 ChucVuId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                 TenChucVu = "Admin",
+                 MoTaChucVu = "Quản trị hệ thống",
+                 TrangThai = true,
+             },
+             new ChucVu
+             {
+                 ChucVuId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                 TenChucVu = "NhanVien",
+                 MoTaChucVu = "Nhân viên bán hàng",
+                 TrangThai = true
+             });
+            var adminTaiKhoanId = Guid.Parse("99999999-9999-9999-9999-999999999999");
+
+            modelBuilder.Entity<TaiKhoan>().HasData(new TaiKhoan
+            {
+                TaiKhoanId = adminTaiKhoanId,
+                Username = "admin",
+                Password = "admin123",
+                NgayTaoTaiKhoan = DateTime.Now
+            });
+
+
+
+
+
+            modelBuilder.Entity<NhanVien>().HasData(new NhanVien
+            {
+                NhanVienId = Guid.Parse("88888888-8888-8888-8888-888888888888"),
+                HoVaTen = "Nguyễn Văn Quản Trị",
+                Sdt = "0987654321",
+                DiaChi = "Tòa nhà FPT Polytechnic, phố Trịnh Văn Bô, phường Phương Canh, quận Nam Từ Liêm, TP. Hà Nội",
+                Email = "admin@shop.com",
+                NgaySinh = new DateTime(1995, 1, 1),
+                NgayTao = DateTime.Now,
+                NgayCapNhatCuoiCung = DateTime.Now,
+                TrangThai = true,
+                TaiKhoanId = adminTaiKhoanId,
+                ChucVuId = Guid.Parse("11111111-1111-1111-1111-111111111111")
+            });
         }
     }
 }

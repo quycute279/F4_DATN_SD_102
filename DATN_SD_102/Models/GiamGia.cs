@@ -6,6 +6,8 @@ namespace F4_API.Models
     {
         [Key]
         public Guid GiamGiaId { get; set; }
+        [Required]
+        [StringLength(50)]
         public string TenGiamGia { get; set; } = null!;
         public string? SanPhamKhuyenMai { get; set; }
         public double PhanTramGiam { get; set; }
