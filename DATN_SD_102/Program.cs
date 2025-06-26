@@ -38,6 +38,10 @@ builder.Services.AddScoped<IGioHangCtRepository, GioHangCtRepository>();
 builder.Services.AddScoped<IGioHangRepository, GioHangRepository>();
 builder.Services.AddScoped<IHinhAnhRepository,HinhanhRepository>();
 builder.Services.AddScoped<ILinhKienCtRepository, LinhKienCtRepository>();
+builder.Services.AddScoped<IDanhMucRepository, DanhMucRepository>();
+builder.Services.AddScoped<INhapHangRepository, NhapHangRepository>();
+builder.Services.AddScoped<IChiTietNhapHangRepository, ChiTietNhapHangRepository>();
+
 //
 //
 var app = builder.Build();

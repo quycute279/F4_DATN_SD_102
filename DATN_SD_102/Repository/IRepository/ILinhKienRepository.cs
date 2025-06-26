@@ -6,10 +6,11 @@ namespace F4_API.Repository.IRepository
     {
         Task<IEnumerable<LinhKien>> GetAllAsync();
         Task<LinhKien> GetByIdAsync(Guid id);
-        Task AddAsync(LinhKien linhKien);
-        Task UpdateAsync(LinhKien linhKien);
+        Task<LinhKien> AddAsync(LinhKien linhKien);
+        Task<LinhKien> UpdateAsync(LinhKien linhKien);
         Task DeleteAsync(Guid id);
         Task<IEnumerable<LinhKien>> GetByDanhMucIdAsync(Guid danhMucId);
         Task<IEnumerable<LinhKien>> SearchByNameAsync(string keyword);
+     
     }
 }
