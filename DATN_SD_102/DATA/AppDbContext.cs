@@ -114,6 +114,56 @@ namespace F4_API.DATA
                 TaiKhoanId = adminTaiKhoanId,
                 ChucVuId = Guid.Parse("11111111-1111-1111-1111-111111111111")
             });
+            modelBuilder.Entity<DanhMuc>().HasData(
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    TenDanhMuc = "CPU (Vi xử lý)",
+                    MoTa = "Trung tâm xử lý dữ liệu chính của máy tính."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                    TenDanhMuc = "Mainboard (Bo mạch chủ)",
+                    MoTa = "Kết nối các linh kiện lại với nhau, cung cấp nguồn và tín hiệu."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                    TenDanhMuc = "RAM (Bộ nhớ tạm)",
+                    MoTa = "Lưu trữ dữ liệu tạm thời khi máy hoạt động, càng nhiều RAM thì xử lý đa nhiệm càng tốt."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                    TenDanhMuc = "Ổ cứng (SSD/HDD)",
+                    MoTa = "Lưu trữ hệ điều hành, phần mềm, dữ liệu người dùng."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000005"),
+                    TenDanhMuc = "Nguồn (PSU)",
+                    MoTa = "Cung cấp điện năng cho toàn bộ hệ thống."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000006"),
+                    TenDanhMuc = "Case (Vỏ máy tính)",
+                    MoTa = "Bảo vệ linh kiện, hỗ trợ tản nhiệt, định hình hệ thống."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000007"),
+                    TenDanhMuc = "Card đồ họa (GPU)",
+                    MoTa = "Dùng cho xử lý đồ họa, gaming, thiết kế, dựng phim. Một số CPU đã tích hợp GPU sẵn."
+                },
+                new DanhMuc
+                {
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000008"),
+                    TenDanhMuc = "Tản nhiệt (Cooling)",
+                    MoTa = "Có thể là tản nhiệt khí hoặc nước, dùng cho CPU hoặc cả hệ thống."
+                }
+            );
         }
     }
 }

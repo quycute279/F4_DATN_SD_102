@@ -68,5 +68,12 @@ namespace F4_API.Repository
                 throw;
             }
         }
+        public async Task<GioHang?> GetGioHangByKhachHangId(Guid khachHangId)
+        {
+            return await _dbcontext.GioHangs
+                .Include(g => g.ChiTiets)
+                .ThenInclude(ct => ct.LinhKien)
+                .FirstOrDefaultAsync(g => g.KhachHangId == khachHangId);
+        }
     }
 }

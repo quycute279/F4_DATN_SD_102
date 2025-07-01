@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using F4_API.DATA;
 using F4_API.Models;
 using F4_API.Repository.IRepository;
+using F4_API.Repository;
 
 namespace F4_API.Controllers
 {
@@ -81,6 +82,23 @@ namespace F4_API.Controllers
         {
             await _repository.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpPut("capnhat-soluong/{id}")]
+        public async Task<IActionResult> CapNhatSoLuong(Guid id, [FromBody] int soLuong)
+        {
+            try
+            {
+                if (soLuong <= 0)
+                    return BadRequest("Số lượng phải lớn hơn 0.");
+
+                await _repository.UpdateSoLuongAsync(id, soLuong);
+                return Ok("Cập nhật số lượng thành công.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi: {ex.Message}");
+            }
         }
     }
 }

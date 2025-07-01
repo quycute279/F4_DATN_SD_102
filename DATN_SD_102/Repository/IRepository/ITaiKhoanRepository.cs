@@ -10,6 +10,7 @@ namespace F4_API.Repository.IRepository
         Task UpdateTaiKhoanAsync(TaiKhoan tk);
         Task DeleteTaiKhoanAsync(Guid id);
         Task<TaiKhoan> GetByIdChucVuAsync(string username, string password);
+        Task<KhachHang?> GetKhachHangByTaiKhoanIdAsync(Guid taiKhoanId);
 
         Task<TaiKhoan> GetByUsernameAsync(string username);
     }

@@ -12,7 +12,8 @@ using F4_API.Models.DTO;
 
 namespace F4_API.Controllers
 {
-    //hahah
+  //huhuhuhu
+
     [Route("api/[controller]")]
     [ApiController]
     public class LinhKienController : ControllerBase
@@ -76,18 +77,36 @@ namespace F4_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] LinhKienDTO dto)
         {
+            var linhKienId = Guid.NewGuid();
+
             var linhKien = new LinhKien
             {
+                LkId = linhKienId,
                 TenLinhKien = dto.TenLinhKien,
                 DanhMucId = dto.DanhMucId,
                 Gia = dto.Gia,
                 MoTa = dto.MoTa,
                 TrangThai = true,
+
+            
+                ChiTiets = dto.linhKienCTs?.Select(x => new LinhKienCT
+                {
+                    LkctId = Guid.NewGuid(),
+                    LkId = linhKienId,
+                    ThuocTinhId = x.ThuocTinhId,
+                    GiaTri = x.GiaTri,
+                    HinhAnhId = x.HinhAnhId,
+                    ThuongHieuId = x.ThuongHieuId,
+                    MoTa = x.MoTa,
+                    TrangThai = x.TrangThai ?? true
+                }).ToList()
             };
 
+       
             var created = await _repository.AddAsync(linhKien);
             return CreatedAtAction(nameof(GetById), new { id = created.LkId }, MapToDTO(created));
         }
+
 
 
 

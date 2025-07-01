@@ -11,5 +11,7 @@ namespace F4_API.Repository.IRepository
         Task AddAsync(GioHangCT entity);
         Task UpdateAsync(GioHangCT entity);
         Task DeleteAsync(Guid id);
+
+        Task UpdateSoLuongAsync(Guid gioHangCtId, int soLuong);
     }
 }

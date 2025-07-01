@@ -15,8 +15,9 @@ namespace F4_API.Models
         public string EmailKh { get; set; } = null!;
         public DateTime NgayTao { get; set; }
         public DateTime NgayNhanHang { get; set; }
+        public decimal? TienShip {  get; set; }
         public double TongTienSauKhiGiam { get; set; }
-        public bool TrangThai { get; set; }
+        public string TrangThai { get; set; }
         public string? GhiChu { get; set; }
 
         public TaiKhoan? TaiKhoan { get; set; }

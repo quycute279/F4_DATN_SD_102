@@ -19,12 +19,14 @@ namespace F4_API.Controllers
         private readonly ITaiKhoanRepository _context;
         private readonly INhanVienRepository _nhanVienRepository;
         private readonly IChucVuRepository _chucVuRepository;
+        private readonly IKhachHangRepository _khachHangrepo;
 
-        public TaiKhoansController(ITaiKhoanRepository context, INhanVienRepository nhanVienRepository, IChucVuRepository chucVuRepository)
+        public TaiKhoansController(ITaiKhoanRepository context, INhanVienRepository nhanVienRepository, IChucVuRepository chucVuRepository, IKhachHangRepository khachHangrepo  )
         {
             _context = context;
             _nhanVienRepository = nhanVienRepository;
             _chucVuRepository = chucVuRepository;
+            _khachHangrepo = khachHangrepo;
         }
 
 
@@ -86,45 +88,56 @@ namespace F4_API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values
-                                       .SelectMany(v => v.Errors)
-                                        .Select(e => e.ErrorMessage)
-                                       .ToList();
                 return BadRequest(new LoginResponseDTO
                 {
                     IsSuccess = false,
-                    Message = "Dữ liệu đăng nhập không hợp lệ: " + string.Join("; ", errors)
+                    Message = "Dữ liệu đăng nhập không hợp lệ."
                 });
             }
 
-
-            var userChucVu = await _context.GetByIdChucVuAsync(username, pass);
-
-            if (userChucVu != null)
+            var taiKhoan = await _context.GetByIdChucVuAsync(username, pass);
+            if (taiKhoan == null)
             {
+                return Unauthorized(new LoginResponseDTO
+                {
+                    IsSuccess = false,
+                    Message = "Sai tên đăng nhập hoặc mật khẩu."
+                });
+            }
 
-                string role = _chucVuRepository.GetByIdChucVuAsync(_nhanVienRepository.GetIdNhanVienTaiKhoan(userChucVu.TaiKhoanId).Result.ChucVuId.Value).Result.TenChucVu;
-
-                ;
+            // Kiểm tra Nhân viên
+            var nhanVien = await _nhanVienRepository.GetIdNhanVienTaiKhoan(taiKhoan.TaiKhoanId);
+            if (nhanVien != null && nhanVien.ChucVuId != null)
+            {
+                var chucVu = await _chucVuRepository.GetByIdChucVuAsync(nhanVien.ChucVuId.Value);
                 return Ok(new LoginResponseDTO
                 {
                     IsSuccess = true,
                     Username = username,
-                    Role = role,
-                    Message = "Đăng nhập thành công!"
+                    Role = chucVu?.TenChucVu ?? "NhanVien",
+                    Message = "Đăng nhập thành công (nhân viên)!"
                 });
             }
-            else
-            {
 
-                return Unauthorized(new LoginResponseDTO
+            // Kiểm tra Khách hàng
+            var khachHang = await _context.GetKhachHangByTaiKhoanIdAsync(taiKhoan.TaiKhoanId);
+            if (khachHang != null)
+            {
+                return Ok(new LoginResponseDTO
                 {
-                    IsSuccess = false,
+                    IsSuccess = true,
                     Username = username,
-                    Role = null,
-                    Message = "Tên đăng nhập hoặc mật khẩu không đúng."
+                    Role = "KhachHang",
+                    Message = "Đăng nhập thành công (khách hàng)!"
                 });
             }
+
+            return BadRequest(new LoginResponseDTO
+            {
+                IsSuccess = false,
+                Message = "Tài khoản không có thông tin người dùng hợp lệ."
+            });
         }
+
     }
 }

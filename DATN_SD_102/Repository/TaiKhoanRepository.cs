@@ -101,5 +101,14 @@ namespace F4_API.Repository
             return tk;
         }
 
+        public async Task<KhachHang?> GetKhachHangByTaiKhoanIdAsync(Guid taiKhoanId)
+        {
+            return await _contextApp.KhachHangs
+                .FirstOrDefaultAsync(kh => kh.TaiKhoanId == taiKhoanId);
+        }
+
+       
+
+
     }
 }
