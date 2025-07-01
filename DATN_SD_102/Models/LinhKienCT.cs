@@ -13,6 +13,7 @@ namespace F4_API.Models
         public Guid? HinhAnhId { get; set; }
         public Guid? ThuongHieuId { get; set; }
         public string? MoTa { get; set; }
+        public int? SoLuongTonKho { get; set; }
         public bool? TrangThai { get; set; }
 
         public virtual ICollection<HinhAnh>? HinhAnhs { get; set; } = new List<HinhAnh>();

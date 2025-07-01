@@ -24,4 +24,8 @@
     <ProjectReference Include="..\DATN_SD_102\F4_API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\" />
+  </ItemGroup>
+
 </Project>

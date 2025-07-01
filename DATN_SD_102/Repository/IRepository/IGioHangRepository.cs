@@ -6,6 +6,7 @@ namespace F4_API.Repository.IRepository
     {
         Task<IEnumerable<GioHang>> GetAllGioHang();
         Task<GioHang> GetByIdGioHang(Guid id);
+        Task<GioHang?> GetGioHangByKhachHangId(Guid khachHangId);
         Task CreateGioHang(GioHang gh);
         Task UpdateGioHang(GioHang gh);
         Task DeleteGioHang(Guid id);

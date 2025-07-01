@@ -65,5 +65,20 @@ namespace F4_API.Repository
                 await _context.SaveChangesAsync();
             }
         }
+
+        public async Task UpdateSoLuongAsync(Guid gioHangCtId, int soLuong)
+        {
+            var gioHangCt = await _context.GioHangCTs.FindAsync(gioHangCtId);
+            if (gioHangCt == null)
+            {
+                throw new Exception("Không tìm thấy chi tiết giỏ hàng cần cập nhật.");
+            }
+
+            gioHangCt.SoLuong = soLuong;
+            gioHangCt.NgayTao = DateTime.Now; // cập nhật lại ngày sửa nếu cần
+            _context.GioHangCTs.Update(gioHangCt);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

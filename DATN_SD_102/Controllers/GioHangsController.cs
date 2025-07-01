@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using F4_API.DATA;
 using F4_API.Models;
 using F4_API.Repository.IRepository;
+using F4_API.Repository;
 
 namespace F4_API.Controllers
 {
@@ -37,7 +38,7 @@ namespace F4_API.Controllers
 
         // PUT: api/GioHangs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(GioHang gioHang)
         {
@@ -57,12 +58,22 @@ namespace F4_API.Controllers
 
         // DELETE: api/GioHangs/5
 
-        [HttpPost, ActionName("Delete")]
+        [HttpDelete("delete/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             await _giohang.DeleteGioHang(id);
             return Ok();
+        }
+
+        [HttpGet("khachhang/{khachHangId}")]
+        public async Task<IActionResult> GetGioHangByKhachHangId(Guid khachHangId)
+        {
+            var gioHang = await _giohang.GetGioHangByKhachHangId(khachHangId);
+            if (gioHang == null)
+                return NotFound("Không tìm thấy giỏ hàng cho khách hàng này.");
+
+            return Ok(gioHang);
         }
     }
 }
