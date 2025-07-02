@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\" />
+    <Folder Include="wwwroot\img\sanpham\" />
+    <Folder Include="wwwroot\img\quangcao\" />
   </ItemGroup>
 
 </Project>

@@ -1,54 +1,77 @@
-﻿using F4_API.Models.DTO;
-using F4_API.Models;
+﻿using F4_API.Models;
+using F4_API.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
-using Web_DATN.Models;
-using Web_DATN.ViewModels;
 
 namespace Web_DATN.Controllers
 {
     public class LinhKienController : Controller
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://localhost:7183/api/LinhKiens";
-
+        private readonly string _baseApiUrl = "https://localhost:7183/api/LinhKiens";
         public LinhKienController()
         {
             _httpClient = new HttpClient();
         }
-
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid? loaiSanPham)
         {
-            var response = await _httpClient.GetAsync(_baseUrl);
-            var result = await response.Content.ReadAsStringAsync();
+            List<LinhKien> linhKiens = new List<LinhKien>();
+            HttpResponseMessage response;
+
+            if (loaiSanPham.HasValue)
+            {
+                // Gọi API lọc theo danh mục
+                response = await _httpClient.GetAsync($"{_baseApiUrl}/by-category/{loaiSanPham.Value}");
+            }
+            else
+            {
+                // Gọi tất cả
+                response = await _httpClient.GetAsync(_baseApiUrl);
+            }
 
             if (response.IsSuccessStatusCode)
             {
-                var data = JsonConvert.DeserializeObject<List<LinhKien>>(result);
-                return View(data);
+                var jsonData = await response.Content.ReadAsStringAsync();
+                linhKiens = JsonConvert.DeserializeObject<List<LinhKien>>(jsonData)!;
+            }
+            else
+            {
+                ViewBag.Error = "Không thể lấy dữ liệu từ API";
             }
 
-            ViewBag.Error = "Không thể tải dữ liệu Linh Kiện";
-            return View(new List<LinhKien>());
+            return View(linhKiens);
         }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LinhKienDTO dto)
+        public async Task<IActionResult> Create(LinhKien model)
         {
+            var dto = new LinhKienDTO
+            {
+                TenLinhKien = model.TenLinhKien,
+                DanhMucId = model.DanhMucId,
+                Gia = model.Gia,
+                MoTa = model.MoTa,
+                TrangThai = true,
+                linhKienCTs = model.ChiTiets.Select(ct => new LinhKienChiTietsDTO
+                {
+                    ThuocTinhId = ct.ThuocTinhId,
+                    GiaTri = ct.GiaTri,
+                    MoTa = ct.MoTa,
+                    TrangThai = ct.TrangThai
+                }).ToList()
+            };
+
             var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(_baseUrl, content);
+            var response = await _httpClient.PostAsync(_baseApiUrl, content);
 
             if (response.IsSuccessStatusCode)
                 return RedirectToAction("Index");
 
-            ViewBag.Error = "Tạo mới thất bại.";
-            return View(dto);
+            ViewBag.Error = "Không thể tạo mới linh kiện.";
+            return View(model);
         }
+
     }
 }

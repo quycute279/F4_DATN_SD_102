@@ -20,10 +20,28 @@ body {
     padding-top: 80px; /* Đẩy nội dung xuống dưới, tránh đè lên nút menu */
     transition: left 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); /* Hiệu ứng mượt */
     z-index: 1000;
+    /* --- THÊM PHẦN NÀY ĐỂ CUỘN --- */
+    overflow-y: auto; /* Cho phép cuộn dọc */
+    max-height: 100vh; /* Chiều cao tối đa bằng viewport */
+    scrollbar-width: thin; /* Firefox: thanh cuộn mảnh */
 }
+    /* Thanh cuộn đẹp cho Chrome */
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
 
+    .sidebar::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+    }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+    /* Khi sidebar mở */
     .sidebar.active {
-        left: 0; /* Hiển thị sidebar khi active */
+        left: 0;
     }
 
 /* Main Content Styling */
