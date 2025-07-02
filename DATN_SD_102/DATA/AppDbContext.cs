@@ -164,6 +164,114 @@ namespace F4_API.DATA
                     MoTa = "Có thể là tản nhiệt khí hoặc nước, dùng cho CPU hoặc cả hệ thống."
                 }
             );
+            modelBuilder.Entity<DanhMuc_LinhKien_ThuocTinh>().HasData(
+                // CPU
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("11111111-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    TenThuocTinh = "Số nhân",
+                    DonVi = "Nhân"
+                },
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("11111111-0000-0000-0000-000000000002"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    TenThuocTinh = "Số luồng",
+                    DonVi = "Luồng"
+                },
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("11111111-0000-0000-0000-000000000003"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    TenThuocTinh = "Xung nhịp",
+                    DonVi = "GHz"
+                },
+
+                // Mainboard
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("22222222-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                    TenThuocTinh = "Socket",
+                    DonVi = null
+                },
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("22222222-0000-0000-0000-000000000002"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+                    TenThuocTinh = "Chipset",
+                    DonVi = null
+                },
+
+                // RAM
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("33333333-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                    TenThuocTinh = "Dung lượng",
+                    DonVi = "GB"
+                },
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("33333333-0000-0000-0000-000000000002"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                    TenThuocTinh = "Bus",
+                    DonVi = "MHz"
+                },
+
+                // Ổ cứng
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("44444444-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                    TenThuocTinh = "Loại",
+                    DonVi = null
+                },
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("44444444-0000-0000-0000-000000000002"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+                    TenThuocTinh = "Dung lượng",
+                    DonVi = "GB"
+                },
+
+                // PSU
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("55555555-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000005"),
+                    TenThuocTinh = "Công suất",
+                    DonVi = "W"
+                },
+
+                // Case
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("66666666-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000006"),
+                    TenThuocTinh = "Loại vỏ",
+                    DonVi = null
+                },
+
+                // GPU
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("77777777-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000007"),
+                    TenThuocTinh = "Dung lượng VRAM",
+                    DonVi = "GB"
+                },
+
+                // Tản nhiệt
+                new DanhMuc_LinhKien_ThuocTinh
+                {
+                    ThuocTinh = Guid.Parse("88888888-0000-0000-0000-000000000001"),
+                    DanhMucId = Guid.Parse("00000000-0000-0000-0000-000000000008"),
+                    TenThuocTinh = "Loại tản",
+                    DonVi = null
+                }
+            );
         }
     }
 }
