@@ -1,0 +1,37 @@
+﻿@model IEnumerable<F4_API.Models.LinhKien>
+@{
+    ViewData["Title"] = "Danh sách Linh Kiện";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<a class="btn btn-primary mb-3" href="@Url.Action("Create")">+ Thêm linh kiện</a>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tên linh kiện</th>
+                <th>Giá</th>
+                <th>Mô tả</th>
+                <th>Trạng thái</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.TenLinhKien</td>
+                    <td>@(item.Gia.HasValue ? item.Gia.Value.ToString("N0") + " VNĐ" : "Chưa có giá")</td>
+                    <td>@item.MoTa</td>
+                    <td>@(item.TrangThai.HasValue && item.TrangThai.Value ? "Hiển thị" : "Ẩn")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">Không có dữ liệu linh kiện nào.</div>
+}
