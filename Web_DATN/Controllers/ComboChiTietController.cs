@@ -123,6 +123,7 @@ namespace Web_DATN.Controllers
 
             var item = await response.Content.ReadFromJsonAsync<ComboChiTiet>();
             return View(item);
+            //2.7
         }
     }
 }

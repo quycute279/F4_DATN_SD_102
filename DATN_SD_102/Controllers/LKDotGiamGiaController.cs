@@ -77,6 +77,6 @@ namespace F4_API.Controllers
             await _context.DeleteLkdotgiamgia(id);
             return Ok();
         }
-        //abdahjbdhad
+        //2.7
     }
 }

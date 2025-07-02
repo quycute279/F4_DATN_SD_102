@@ -11,6 +11,6 @@ namespace F4_API.Repository.IRepository
         Task UpdateGiamGia(GiamGia entity); // Cập nhật
         Task DeleteGiamGia(Guid id); // Xoá theo ID
 
-        //abdahjbdhad
+        //2.7
     }
 }

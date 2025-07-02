@@ -129,5 +129,6 @@ namespace Web_DATN.Controllers
             var combo = await response.Content.ReadFromJsonAsync<Combo>();
             return View(combo);
         }
+        //2.7
     }
 }

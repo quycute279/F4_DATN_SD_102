@@ -11,6 +11,6 @@ namespace F4_API.Repository.IRepository
         Task CreateLkdotgiamgia(LKDotGiamGia entity); // Thêm mới
         Task UpdateLkdotgiamgia(LKDotGiamGia entity); // Cập nhật
         Task DeleteLkdotgiamgia(Guid id); // Xoá
-        //abdahjbdhad
+        //2.7
     }
 }
