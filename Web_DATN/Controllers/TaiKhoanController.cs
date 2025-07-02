@@ -57,21 +57,15 @@ namespace Web_DATN.Controllers
                 if (loginResponse.Role == "KhachHang")
                 {
                     HttpContext.Session.SetString("Role", "KhachHang");
-                    HttpContext.Session.SetString("MaKhachHang", loginResponse.Username); // hoặc ID nếu có
+                    HttpContext.Session.SetString("MaKhachHang", loginResponse.Username);
                     HttpContext.Session.SetString("TenKhachHang", loginResponse.Username);
-                    return RedirectToAction("Index", "KhachHang");
+                    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
                 }
-                //else if (loginResponse.Role == "Admin")
-                //{
-                //    HttpContext.Session.SetString("Role", "Admin");
-                //    HttpContext.Session.SetString("TenNguoiDung", loginResponse.Username);
-                //    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
-                //}
                 else if (loginResponse.Role == "Admin")
                 {
                     HttpContext.Session.SetString("Role", "Admin");
                     HttpContext.Session.SetString("TenNguoiDung", loginResponse.Username);
-                    return RedirectToAction("Dashboard", "Admin"); // CHUYỂN ĐẾN TRANG QUẢN TRỊ
+                    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
                 }
                 else if (loginResponse.Role == "NhanVien")
                 {
@@ -182,7 +176,7 @@ namespace Web_DATN.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DangKyNhanVien(string Email,string HoVaTen,string SoDienThoai,string DiaChi,string Tk,  string MK1,  string MK2,  string GioiTinh,  DateTime NgaySinh,  DateTime NgayTao,DateTime NgayCapNhat)
+        public async Task<IActionResult> DangKyNhanVien(string Email, string HoVaTen, string SoDienThoai, string DiaChi, string Tk, string MK1, string MK2, string GioiTinh, DateTime NgaySinh, DateTime NgayTao, DateTime NgayCapNhat)
         {
             if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(HoVaTen) ||
                 string.IsNullOrWhiteSpace(Tk) || string.IsNullOrWhiteSpace(MK1) || string.IsNullOrWhiteSpace(MK2))
@@ -266,7 +260,15 @@ namespace Web_DATN.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Xóa toàn bộ session
+            HttpContext.Session.Clear();
 
+            // Chuyển về trang đăng nhập
+            return RedirectToAction("Login", "TaiKhoan");
+        }
 
     }
 }

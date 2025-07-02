@@ -12,7 +12,7 @@ using F4_API.Models.DTO;
 
 namespace F4_API.Controllers
 {
-  //huhuhuhu
+    //huhuhuhu
 
     [Route("api/[controller]")]
     [ApiController]
@@ -88,7 +88,7 @@ namespace F4_API.Controllers
                 MoTa = dto.MoTa,
                 TrangThai = true,
 
-            
+
                 ChiTiets = dto.linhKienCTs?.Select(x => new LinhKienCT
                 {
                     LkctId = Guid.NewGuid(),
@@ -102,7 +102,7 @@ namespace F4_API.Controllers
                 }).ToList()
             };
 
-       
+
             var created = await _repository.AddAsync(linhKien);
             return CreatedAtAction(nameof(GetById), new { id = created.LkId }, MapToDTO(created));
         }
@@ -149,5 +149,14 @@ namespace F4_API.Controllers
             var result = await _repository.SearchByNameAsync(keyword);
             return Ok(result);
         }
+
+        [HttpGet("by-category/{danhMucId}")]
+        public async Task<IActionResult> GetByDanhMuc(Guid danhMucId)
+        {
+            var linhKiens = await _repository.GetByDanhMucIdAsync(danhMucId);
+            var dtoList = linhKiens.Select(MapToDTO).ToList();
+            return Ok(dtoList);
+        }
+
     }
 }
