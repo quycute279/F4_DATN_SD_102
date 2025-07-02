@@ -1,141 +1,84 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Quản lý Sản phẩm";
+    ViewData["Title"] = "Đăng ký nhân viên";
 }
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Đăng Ký Nhân Viên</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons.js"></script>
-    <style>
-        .icon-large {
-            font-size: 1.5rem;
-            color: #FF4500;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg mt-5 border-0">
-                    <div class="card-header text-center" style="background-color: #FF4500; color: white;">
-                        <h2>Đăng Ký Nhân Viên</h2>
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h4><i class="fas fa-user-plus me-2"></i> Đăng Ký Nhân Viên Mới</h4>
+        </div>
+
+        <div class="card-body p-4">
+            @if (ViewBag.loii != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.loii</div>
+            }
+
+            <form asp-action="DangKyNhanVien" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Họ và tên <span class="text-danger">*</span></label>
+                        <input name="HoVaTen" class="form-control" placeholder="Nguyễn Văn A" required />
                     </div>
-                    <div class="card-body">
-                        @if (ViewBag.loii != null)
-                        {
-                            <div class="alert alert-danger text-center">
-                                @ViewBag.loii
-                            </div>
-                        }
 
-                        <form asp-action="DangKyNhanVien" method="post">
-                            @Html.AntiForgeryToken()
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                        <input type="email" name="Email" class="form-control" placeholder="example@gmail.com" required />
+                    </div>
 
-                            <!-- Họ và Tên -->
-                            <div class="mb-3">
-                                <label for="HoVaTen" class="form-label fw-bold">Họ và Tên</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="person-outline" class="icon-large"></ion-icon></span>
-                                    <input type="text" class="form-control" id="HoVaTen" name="HoVaTen" required placeholder="Nhập họ tên" />
-                                </div>
-                            </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Số điện thoại <span class="text-danger">*</span></label>
+                        <input name="SoDienThoai" class="form-control" placeholder="098xxxxxxx" required />
+                    </div>
 
-                            <!-- Email -->
-                            <div class="mb-3">
-                                <label for="Email" class="form-label fw-bold">Email</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="mail-outline" class="icon-large"></ion-icon></span>
-                                    <input type="email" class="form-control" id="Email" name="Email" required placeholder="Nhập email" />
-                                </div>
-                            </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Địa chỉ</label>
+                        <input name="DiaChi" class="form-control" placeholder="Số nhà, phường, quận..." />
+                    </div>
 
-                            <!-- SĐT -->
-                            <div class="mb-3">
-                                <label for="SoDienThoai" class="form-label fw-bold">Số điện thoại</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="call-outline" class="icon-large"></ion-icon></span>
-                                    <input type="text" class="form-control" id="SoDienThoai" name="SoDienThoai" required placeholder="Nhập số điện thoại" />
-                                </div>
-                            </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Tên tài khoản <span class="text-danger">*</span></label>
+                        <input name="Tk" class="form-control" required />
+                    </div>
 
-                            <!-- Địa chỉ -->
-                            <div class="mb-3">
-                                <label for="DiaChi" class="form-label fw-bold">Địa chỉ</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="home-outline" class="icon-large"></ion-icon></span>
-                                    <input type="text" class="form-control" id="DiaChi" name="DiaChi" placeholder="Nhập địa chỉ" />
-                                </div>
-                            </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Mật khẩu <span class="text-danger">*</span></label>
+                        <input type="password" name="MK1" class="form-control" required />
+                    </div>
 
-                            <!-- Tài khoản -->
-                            <div class="mb-3">
-                                <label for="Tk" class="form-label fw-bold">Tên tài khoản</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="person-circle-outline" class="icon-large"></ion-icon></span>
-                                    <input type="text" class="form-control" id="Tk" name="Tk" required placeholder="Tên đăng nhập" />
-                                </div>
-                            </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Xác nhận mật khẩu <span class="text-danger">*</span></label>
+                        <input type="password" name="MK2" class="form-control" required />
+                    </div>
 
-                            <!-- Mật khẩu -->
-                            <div class="mb-3">
-                                <label for="MK1" class="form-label fw-bold">Mật khẩu</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="lock-closed-outline" class="icon-large"></ion-icon></span>
-                                    <input type="password" class="form-control" id="MK1" name="MK1" required placeholder="Nhập mật khẩu" />
-                                </div>
-                            </div>
-
-                            <!-- Nhập lại Mật khẩu -->
-                            <div class="mb-3">
-                                <label for="MK2" class="form-label fw-bold">Xác nhận mật khẩu</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white"><ion-icon name="lock-closed-outline" class="icon-large"></ion-icon></span>
-                                    <input type="password" class="form-control" id="MK2" name="MK2" required placeholder="Nhập lại mật khẩu" />
-                                </div>
-                            </div>
-
-                            <!-- Giới tính -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Giới tính</label>
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="GioiTinh" id="Nam" value="Nam" checked />
-                                        <label class="form-check-label" for="Nam">Nam</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="GioiTinh" id="Nu" value="Nữ" />
-                                        <label class="form-check-label" for="Nu">Nữ</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Ngày sinh -->
-                            <div class="mb-3">
-                                <label for="NgaySinh" class="form-label fw-bold">Ngày sinh</label>
-                                <input type="date" class="form-control" id="NgaySinh" name="NgaySinh" required />
-                            </div>
-
-                            <!-- Nút Đăng Ký -->
-                            <div class="d-grid mt-3">
-                                <button type="submit" class="btn fw-bold text-white" style="background-color: #FF4500;">Đăng Ký Nhân Viên</button>
-                            </div>
-                        </form>
-
-                        <div class="mt-3 text-center">
-                            <a href="/NhanVien/QuanLyNhanVien" class="text-decoration-none fw-bold" style="color: #FF4500;">Quay lại trang đăng nhập</a>
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Giới tính</label><br />
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="GioiTinh" value="Nam" checked />
+                            <label class="form-check-label">Nam</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="radio" class="form-check-input" name="GioiTinh" value="Nữ" />
+                            <label class="form-check-label">Nữ</label>
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Ngày sinh</label>
+                        <input type="date" name="NgaySinh" class="form-control" required />
+                    </div>
                 </div>
-            </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary fw-bold">
+                        <i class="fas fa-save me-1"></i> Lưu thông tin
+                    </button>
+                    <a href="@Url.Action("Index", "NhanVien")" class="btn btn-secondary ms-2">Quay lại</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
