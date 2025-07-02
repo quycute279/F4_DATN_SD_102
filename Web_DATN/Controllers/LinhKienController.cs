@@ -14,10 +14,21 @@ namespace Web_DATN.Controllers
         {
             _httpClient = new HttpClient();
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(Guid? loaiSanPham)
         {
             List<LinhKien> linhKiens = new List<LinhKien>();
-            var response = await _httpClient.GetAsync(_baseApiUrl);
+            HttpResponseMessage response;
+
+            if (loaiSanPham.HasValue)
+            {
+                // Gọi API lọc theo danh mục
+                response = await _httpClient.GetAsync($"{_baseApiUrl}/by-category/{loaiSanPham.Value}");
+            }
+            else
+            {
+                // Gọi tất cả
+                response = await _httpClient.GetAsync(_baseApiUrl);
+            }
 
             if (response.IsSuccessStatusCode)
             {
@@ -31,6 +42,7 @@ namespace Web_DATN.Controllers
 
             return View(linhKiens);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Create(LinhKien model)

@@ -57,9 +57,9 @@ namespace Web_DATN.Controllers
                 if (loginResponse.Role == "KhachHang")
                 {
                     HttpContext.Session.SetString("Role", "KhachHang");
-                    HttpContext.Session.SetString("MaKhachHang", loginResponse.Username); // hoặc ID nếu có
+                    HttpContext.Session.SetString("MaKhachHang", loginResponse.Username); 
                     HttpContext.Session.SetString("TenKhachHang", loginResponse.Username);
-                    return RedirectToAction("Index", "KhachHang");
+                    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
                 }
                 else if (loginResponse.Role == "Admin")
                 {
@@ -260,7 +260,15 @@ namespace Web_DATN.Controllers
             return RedirectToAction("Login");
         }
 
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            // Xóa toàn bộ session
+            HttpContext.Session.Clear();
 
+            // Chuyển về trang đăng nhập
+            return RedirectToAction("Login", "TaiKhoan");
+        }
 
     }
 }

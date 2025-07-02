@@ -69,9 +69,12 @@ namespace F4_API.Repository
         public async Task<IEnumerable<LinhKien>> GetByDanhMucIdAsync(Guid danhMucId)
         {
             return await _context.LinhKiens
+                .Include(x => x.ChiTiets)
+                .Include(x => x.DanhMuc)
                 .Where(x => x.DanhMucId == danhMucId)
                 .ToListAsync();
         }
+
 
         public async Task<IEnumerable<LinhKien>> SearchByNameAsync(string keyword)
         {

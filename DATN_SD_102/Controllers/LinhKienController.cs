@@ -149,5 +149,14 @@ namespace F4_API.Controllers
             var result = await _repository.SearchByNameAsync(keyword);
             return Ok(result);
         }
+
+        [HttpGet("by-category/{danhMucId}")]
+        public async Task<IActionResult> GetByDanhMuc(Guid danhMucId)
+        {
+            var linhKiens = await _repository.GetByDanhMucIdAsync(danhMucId);
+            var dtoList = linhKiens.Select(MapToDTO).ToList();
+            return Ok(dtoList);
+        }
+
     }
 }
