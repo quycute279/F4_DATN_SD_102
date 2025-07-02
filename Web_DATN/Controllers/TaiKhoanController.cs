@@ -61,11 +61,17 @@ namespace Web_DATN.Controllers
                     HttpContext.Session.SetString("TenKhachHang", loginResponse.Username);
                     return RedirectToAction("Index", "KhachHang");
                 }
+                //else if (loginResponse.Role == "Admin")
+                //{
+                //    HttpContext.Session.SetString("Role", "Admin");
+                //    HttpContext.Session.SetString("TenNguoiDung", loginResponse.Username);
+                //    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
+                //}
                 else if (loginResponse.Role == "Admin")
                 {
                     HttpContext.Session.SetString("Role", "Admin");
                     HttpContext.Session.SetString("TenNguoiDung", loginResponse.Username);
-                    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
+                    return RedirectToAction("Dashboard", "Admin"); // CHUYỂN ĐẾN TRANG QUẢN TRỊ
                 }
                 else if (loginResponse.Role == "NhanVien")
                 {

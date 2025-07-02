@@ -1,0 +1,74 @@
+﻿@model Web_DATN.ViewModels.LinhKienFullViewModel
+@{
+    ViewData["Title"] = "Tạo mới Linh Kiện";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="TenLinhKien"></label>
+        <input asp-for="TenLinhKien" class="form-control" />
+        <span asp-validation-for="TenLinhKien" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Gia"></label>
+        <input asp-for="Gia" class="form-control" />
+        <span asp-validation-for="Gia" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="MoTa"></label>
+        <textarea asp-for="MoTa" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TrangThai"></label>
+        <select asp-for="TrangThai" class="form-control">
+            <option value="true">Hiển thị</option>
+            <option value="false">Ẩn</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DanhMucId">Danh mục</label>
+        <select asp-for="DanhMucId" class="form-control" asp-items="Model.DanhMucs"></select>
+        <span asp-validation-for="DanhMucId" class="text-danger"></span>
+    </div>
+
+    <h4>Chi tiết thuộc tính</h4>
+    <div id="chiTietContainer">
+        @for (int i = 0; i < Model.ThuocTinhs.Count; i++)
+        {
+            <div class="border p-3 mb-2">
+                <div class="form-group">
+                    <label>Thuộc tính</label>
+                    <select name="ThuocTinhs[@i].ThuocTinhId" class="form-control"
+                            asp-items="Model.ThuocTinhs[@i].DanhSachThuocTinh"></select>
+                </div>
+                <div class="form-group">
+                    <label>Giá trị</label>
+                    <input name="ThuocTinhs[@i].GiaTri" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Mô tả</label>
+                    <input name="ThuocTinhs[@i].MoTa" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <select name="ThuocTinhs[@i].TrangThai" class="form-control">
+                        <option value="true">Hiển thị</option>
+                        <option value="false">Ẩn</option>
+                    </select>
+                </div>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Tạo mới</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

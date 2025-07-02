@@ -4,16 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using Web_DATN.Models;
-using Web_DATN.ViewModels;
 
 namespace Web_DATN.Controllers
 {
-    public class LinhKienController : Controller
+    public class LinhKienChiTietController : Controller
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://localhost:7183/api/LinhKiens";
+        private readonly string _baseUrl = "https://localhost:7183/api/LinhKienChiTiets";
 
-        public LinhKienController()
+        public LinhKienChiTietController()
         {
             _httpClient = new HttpClient();
         }
@@ -25,12 +24,12 @@ namespace Web_DATN.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                var data = JsonConvert.DeserializeObject<List<LinhKien>>(result);
+                var data = JsonConvert.DeserializeObject<List<LinhKienCT>>(result);
                 return View(data);
             }
 
-            ViewBag.Error = "Không thể tải dữ liệu Linh Kiện";
-            return View(new List<LinhKien>());
+            ViewBag.Error = "Không thể tải dữ liệu Chi Tiết Linh Kiện";
+            return View(new List<LinhKienCT>());
         }
 
         public IActionResult Create()
@@ -39,7 +38,7 @@ namespace Web_DATN.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(LinhKienDTO dto)
+        public async Task<IActionResult> Create(LinhKienChiTietsDTO dto)
         {
             var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_baseUrl, content);
@@ -47,7 +46,7 @@ namespace Web_DATN.Controllers
             if (response.IsSuccessStatusCode)
                 return RedirectToAction("Index");
 
-            ViewBag.Error = "Tạo mới thất bại.";
+            ViewBag.Error = "Tạo chi tiết linh kiện thất bại.";
             return View(dto);
         }
     }
