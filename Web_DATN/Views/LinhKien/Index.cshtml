@@ -1,48 +1,62 @@
 ﻿@model List<F4_API.Models.LinhKien>
 @{
-    ViewData["Title"] = "Danh sách linh kiện";
+    var danhMucDict = ViewBag.DanhMucDict as Dictionary<Guid, string> ?? new();
+    var thuocTinhDict = ViewBag.ThuocTinhDict as Dictionary<Guid, List<F4_API.Models.DanhMuc_LinhKien_ThuocTinh>> ?? new();
 }
 
-<h2>Danh sách Linh Kiện</h2>
+<h2>Danh sách linh kiện</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">Thêm linh kiện mới</a>
 
-<a asp-action="Create" class="btn btn-success mb-3">+ Thêm linh kiện</a>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-info">Chưa có linh kiện nào.</div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Tên linh kiện</th>
+            <th>Danh mục</th>
+            <th>Giá</th>
+            <th>Mô tả</th>
+            <th>Trạng thái</th>
+            <th>Thuộc tính danh mục</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>Tên linh kiện</th>
-                <th>Danh mục</th>
-                <th>Giá</th>
-                <th>Mô tả</th>
-                <th>Trạng thái</th>
+                <td>@item.TenLinhKien</td>
+                <td>@(item.DanhMucId.HasValue && danhMucDict.TryGetValue(item.DanhMucId.Value, out var tenDanhMuc) ? tenDanhMuc : "Không rõ")</td>
+                <td>@string.Format("{0:N0}", item.Gia) đ</td>
+                <td>@item.MoTa</td>
+                <td>
+                    @if (item.TrangThai.HasValue && item.TrangThai.Value)
+                    {
+                        <span class="badge bg-success">Hiển thị</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Ẩn</span>
+                    }
+                </td>
+                <td>
+                    @if (item.DanhMucId.HasValue && thuocTinhDict.TryGetValue(item.DanhMucId.Value, out var thuocTinhs))
+                    {
+                        <ul class="mb-0">
+                            @foreach (var tt in thuocTinhs)
+                            {
+                                <li>@tt.TenThuocTinh (@tt.DonVi)</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <i>Không có</i>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.LkId" class="btn btn-warning btn-sm">Sửa</a>
+                    <a asp-action="Details" asp-route-id="@item.LkId" class="btn btn-info btn-sm">Chi tiết</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.TenLinhKien</td>
-                    <td>@item.DanhMuc?.TenDanhMuc</td>
-                    <td>@string.Format("{0:N0} đ", item.Gia)</td>
-                    <td>@item.MoTa</td>
-                    <td>
-                        @if (item.TrangThai == true)
-                        {
-                            <span class="badge bg-success">Hiển thị</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary">Ẩn</span>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>
