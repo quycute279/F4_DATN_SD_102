@@ -99,8 +99,8 @@ body {
 /* Logo Styling */
 /* Logo Styling */
 .navbar-brand .nav-logo {
-    height: 120px; /* Chiều cao lớn hơn cho logo */
-    max-height: 150px; /* Đảm bảo logo không quá lớn */
+    height: 93px; /* Chiều cao lớn hơn cho logo */
+    max-height: 93px; /* Đảm bảo logo không quá lớn */
     width: auto; /* Giữ tỷ lệ của logo */
     object-fit: contain; /* Đảm bảo logo không bị méo */
     display: block; /* Giúp logo luôn là một khối riêng */
