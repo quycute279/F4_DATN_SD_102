@@ -1,74 +1,103 @@
 ﻿@model Web_DATN.ViewModels.LinhKienFullViewModel
 @{
-    ViewData["Title"] = "Tạo mới Linh Kiện";
+    ViewData["Title"] = "Thêm linh kiện";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Thêm mới Linh Kiện</h2>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="TenLinhKien"></label>
+<form asp-action="Create" method="post" asp-controller="LinhKien">
+    <div class="mb-3">
+        <label asp-for="TenLinhKien" class="form-label"></label>
         <input asp-for="TenLinhKien" class="form-control" />
         <span asp-validation-for="TenLinhKien" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Gia"></label>
+    <div class="mb-3">
+        <label asp-for="DanhMucId" class="form-label">Danh mục</label>
+        <select asp-for="DanhMucId" asp-items="Model.DanhMucs" class="form-control" id="danhMucSelect">
+            <option value="">-- Chọn danh mục --</option>
+        </select>
+        <span asp-validation-for="DanhMucId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Gia" class="form-label"></label>
         <input asp-for="Gia" class="form-control" />
         <span asp-validation-for="Gia" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="MoTa"></label>
+    <div class="mb-3">
+        <label asp-for="MoTa" class="form-label"></label>
         <textarea asp-for="MoTa" class="form-control"></textarea>
     </div>
 
-    <div class="form-group">
-        <label asp-for="TrangThai"></label>
-        <select asp-for="TrangThai" class="form-control">
-            <option value="true">Hiển thị</option>
-            <option value="false">Ẩn</option>
-        </select>
+    <div class="form-check mb-3">
+        <input asp-for="TrangThai" class="form-check-input" />
+        <label class="form-check-label" asp-for="TrangThai">Hiển thị</label>
     </div>
 
-    <div class="form-group">
-        <label asp-for="DanhMucId">Danh mục</label>
-        <select asp-for="DanhMucId" class="form-control" asp-items="Model.DanhMucs"></select>
-        <span asp-validation-for="DanhMucId" class="text-danger"></span>
-    </div>
+    <h4>Thuộc tính linh kiện</h4>
+    <div id="thuocTinhList"></div>
 
-    <h4>Chi tiết thuộc tính</h4>
-    <div id="chiTietContainer">
-        @for (int i = 0; i < Model.ThuocTinhs.Count; i++)
-        {
-            <div class="border p-3 mb-2">
-                <div class="form-group">
-                    <label>Thuộc tính</label>
-                    <select name="ThuocTinhs[@i].ThuocTinhId" class="form-control"
-                            asp-items="Model.ThuocTinhs[@i].DanhSachThuocTinh"></select>
-                </div>
-                <div class="form-group">
-                    <label>Giá trị</label>
-                    <input name="ThuocTinhs[@i].GiaTri" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <input name="ThuocTinhs[@i].MoTa" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select name="ThuocTinhs[@i].TrangThai" class="form-control">
-                        <option value="true">Hiển thị</option>
-                        <option value="false">Ẩn</option>
-                    </select>
-                </div>
-            </div>
-        }
-    </div>
-
-    <button type="submit" class="btn btn-success">Tạo mới</button>
+    <button type="submit" class="btn btn-primary">Lưu</button>
 </form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("danhMucSelect").addEventListener("change", async function () {
+            const danhMucId = this.value;
+            const container = document.getElementById("thuocTinhList");
+            container.innerHTML = "";
+
+            if (!danhMucId) return;
+
+            try {
+                const response = await fetch(`/LinhKien/GetThuocTinhsTheoDanhMuc?danhMucId=${danhMucId}`);
+                if (!response.ok) throw new Error("Lỗi khi lấy thuộc tính");
+
+                const data = await response.json();
+                console.log("Data received:", data);
+
+                // Kiểm tra cấu trúc dữ liệu trả về
+                if (Array.isArray(data)) {
+                    // Nếu data là array of thuộc tính
+                    data.forEach((tt, index) => {
+                        const html = `
+                            <div class="border p-3 mb-2">
+                                <input type="hidden" name="ThuocTinhs[${index}].ThuocTinhId" value="${tt.thuocTinhId || tt.id}" />
+                                <label class="form-label">${tt.tenThuocTinh} ${tt.donVi ? '(' + tt.donVi + ')' : ''}</label>
+                                <input name="ThuocTinhs[${index}].TenThuocTinh" class="form-control mb-2" value="${tt.tenThuocTinh}" readonly />
+                                <input name="ThuocTinhs[${index}].GiaTri" class="form-control mb-2" placeholder="Nhập giá trị" />
+                                <input name="ThuocTinhs[${index}].MoTa" class="form-control mb-2" placeholder="Mô tả" />
+                                <div class="form-check">
+                                    <input type="hidden" name="ThuocTinhs[${index}].TrangThai" value="false" />
+                                    <input type="checkbox" name="ThuocTinhs[${index}].TrangThai" value="true" class="form-check-input" checked />
+                                    <label class="form-check-label">Hiển thị</label>
+                                </div>
+                            </div>`;
+                        container.insertAdjacentHTML('beforeend', html);
+                    });
+                } else {
+                    // Nếu data là object đơn lẻ
+                    const html = `
+                        <div class="border p-3 mb-2">
+                            <input type="hidden" name="ThuocTinhs[0].ThuocTinhId" value="${data.thuocTinhId || data.thuocTinh}" />
+                            <label class="form-label">${data.tenThuocTinh} ${data.donVi ? '(' + data.donVi + ')' : ''}</label>
+                            <input name="ThuocTinhs[0].TenThuocTinh" class="form-control mb-2" value="${data.tenThuocTinh}" readonly />
+                            <input name="ThuocTinhs[0].GiaTri" class="form-control mb-2" placeholder="Nhập giá trị" />
+                            <input name="ThuocTinhs[0].MoTa" class="form-control mb-2" placeholder="Mô tả" />
+                            <div class="form-check">
+                                <input type="hidden" name="ThuocTinhs[0].TrangThai" value="false" />
+                                <input type="checkbox" name="ThuocTinhs[0].TrangThai" value="true" class="form-check-input" checked />
+                                <label class="form-check-label">Hiển thị</label>
+                            </div>
+                        </div>`;
+                    container.insertAdjacentHTML('beforeend', html);
+                }
+            } catch (err) {
+                console.error("Lỗi khi tải thuộc tính:", err);
+            }
+        });
+    </script>
 }

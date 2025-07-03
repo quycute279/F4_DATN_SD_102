@@ -1,60 +1,74 @@
 ﻿using F4_API.Models;
 using F4_API.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
+using Web_DATN.ViewModels;
 
 namespace Web_DATN.Controllers
 {
     public class LinhKienController : Controller
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseApiUrl = "https://localhost:7183/api/LinhKiens";
+        private const string BaseApiUrl = "https://localhost:7183/api/LinhKiens";
+        private const string ThuocTinhApiUrl = "https://localhost:7183/api/DanhMuc_LinhKien_ThuocTinh";
+        private const string DanhMucApiUrl = "https://localhost:7183/api/DanhMucs";
+
         public LinhKienController()
         {
             _httpClient = new HttpClient();
         }
+
+        // Hiển thị danh sách linh kiện
         public async Task<IActionResult> Index(Guid? loaiSanPham)
         {
-            List<LinhKien> linhKiens = new List<LinhKien>();
-            HttpResponseMessage response;
+            var url = loaiSanPham.HasValue
+                ? $"{BaseApiUrl}/by-category/{loaiSanPham.Value}"
+                : BaseApiUrl;
 
-            if (loaiSanPham.HasValue)
-            {
-                // Gọi API lọc theo danh mục
-                response = await _httpClient.GetAsync($"{_baseApiUrl}/by-category/{loaiSanPham.Value}");
-            }
-            else
-            {
-                // Gọi tất cả
-                response = await _httpClient.GetAsync(_baseApiUrl);
-            }
+            var response = await _httpClient.GetAsync(url);
+            var linhKiens = new List<LinhKien>();
 
             if (response.IsSuccessStatusCode)
             {
-                var jsonData = await response.Content.ReadAsStringAsync();
-                linhKiens = JsonConvert.DeserializeObject<List<LinhKien>>(jsonData)!;
-            }
-            else
-            {
-                ViewBag.Error = "Không thể lấy dữ liệu từ API";
+                var json = await response.Content.ReadAsStringAsync();
+                linhKiens = JsonConvert.DeserializeObject<List<LinhKien>>(json)!;
             }
 
             return View(linhKiens);
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Create(LinhKien model)
+        // GET: /LinhKien/Create
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
+            var vm = new LinhKienFullViewModel
+            {
+                DanhMucs = await GetDanhMucSelectList(),
+                ThuocTinhs = new List<LinhKienThuocTinhCreateViewModel>()
+            };
+            return View(vm);
+        }
+
+        // POST: /LinhKien/Create
+        [HttpPost]
+        public async Task<IActionResult> Create(LinhKienFullViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                vm.DanhMucs = await GetDanhMucSelectList();
+                return View(vm);
+            }
+
             var dto = new LinhKienDTO
             {
-                TenLinhKien = model.TenLinhKien,
-                DanhMucId = model.DanhMucId,
-                Gia = model.Gia,
-                MoTa = model.MoTa,
-                TrangThai = true,
-                linhKienCTs = model.ChiTiets.Select(ct => new LinhKienChiTietsDTO
+                TenLinhKien = vm.TenLinhKien,
+                DanhMucId = vm.DanhMucId,
+                Gia = vm.Gia,
+                MoTa = vm.MoTa,
+                TrangThai = vm.TrangThai,
+                linhKienCTs = vm.ThuocTinhs.Select(ct => new LinhKienChiTietsDTO
                 {
                     ThuocTinhId = ct.ThuocTinhId,
                     GiaTri = ct.GiaTri,
@@ -64,14 +78,44 @@ namespace Web_DATN.Controllers
             };
 
             var content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync(_baseApiUrl, content);
+            var response = await _httpClient.PostAsync(BaseApiUrl, content);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("Index");
+                return RedirectToAction(nameof(Index));
 
             ViewBag.Error = "Không thể tạo mới linh kiện.";
-            return View(model);
+            vm.DanhMucs = await GetDanhMucSelectList();
+            return View(vm);
         }
 
+        // AJAX: Lấy thuộc tính theo DanhMucId
+        [HttpGet]
+        public async Task<IActionResult> GetThuocTinhsTheoDanhMuc(string danhMucId)
+        {
+            var response = await _httpClient.GetAsync($"{ThuocTinhApiUrl}/{danhMucId}");
+            if (!response.IsSuccessStatusCode)
+                return Json(new List<object>());
+
+            var json = await response.Content.ReadAsStringAsync();
+            return Content(json, "application/json");
+        }
+
+        // Helper: load dropdown DanhMuc
+        private async Task<List<SelectListItem>> GetDanhMucSelectList()
+        {
+            var response = await _httpClient.GetAsync(DanhMucApiUrl);
+            var list = new List<SelectListItem>();
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var data = JsonConvert.DeserializeObject<List<DanhMuc>>(json)!;
+                list = data.Select(dm => new SelectListItem
+                {
+                    Value = dm.DanhMucId.ToString(),
+                    Text = dm.TenDanhMuc
+                }).ToList();
+            }
+            return list;
+        }
     }
 }

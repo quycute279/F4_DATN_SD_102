@@ -1,18 +1,23 @@
-﻿@model IEnumerable<F4_API.Models.LinhKien>
+﻿@model List<F4_API.Models.LinhKien>
 @{
-    ViewData["Title"] = "Danh sách Linh Kiện";
+    ViewData["Title"] = "Danh sách linh kiện";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2>Danh sách Linh Kiện</h2>
 
-<a class="btn btn-primary mb-3" href="@Url.Action("Create")">+ Thêm linh kiện</a>
+<a asp-action="Create" class="btn btn-success mb-3">+ Thêm linh kiện</a>
 
-@if (Model != null && Model.Any())
+@if (!Model.Any())
 {
-    <table class="table table-bordered">
+    <div class="alert alert-info">Chưa có linh kiện nào.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>Tên linh kiện</th>
+                <th>Danh mục</th>
                 <th>Giá</th>
                 <th>Mô tả</th>
                 <th>Trạng thái</th>
@@ -23,15 +28,21 @@
             {
                 <tr>
                     <td>@item.TenLinhKien</td>
-                    <td>@(item.Gia.HasValue ? item.Gia.Value.ToString("N0") + " VNĐ" : "Chưa có giá")</td>
+                    <td>@item.DanhMuc?.TenDanhMuc</td>
+                    <td>@string.Format("{0:N0} đ", item.Gia)</td>
                     <td>@item.MoTa</td>
-                    <td>@(item.TrangThai.HasValue && item.TrangThai.Value ? "Hiển thị" : "Ẩn")</td>
+                    <td>
+                        @if (item.TrangThai == true)
+                        {
+                            <span class="badge bg-success">Hiển thị</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Ẩn</span>
+                        }
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-}
-else
-{
-    <div class="alert alert-warning">Không có dữ liệu linh kiện nào.</div>
 }
