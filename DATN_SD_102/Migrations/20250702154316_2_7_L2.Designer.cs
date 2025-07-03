@@ -4,6 +4,7 @@ using F4_API.DATA;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F4_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250702154316_2_7_L2")]
+    partial class _2_7_L2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,6 +155,9 @@ namespace F4_API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
                     b.HasKey("DanhMucId");
 
                     b.ToTable("DanhMucs");
@@ -161,49 +167,57 @@ namespace F4_API.Migrations
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000001"),
                             MoTa = "Trung tâm xử lý dữ liệu chính của máy tính.",
-                            TenDanhMuc = "CPU (Vi xử lý)"
+                            TenDanhMuc = "CPU (Vi xử lý)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000002"),
                             MoTa = "Kết nối các linh kiện lại với nhau, cung cấp nguồn và tín hiệu.",
-                            TenDanhMuc = "Mainboard (Bo mạch chủ)"
+                            TenDanhMuc = "Mainboard (Bo mạch chủ)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000003"),
                             MoTa = "Lưu trữ dữ liệu tạm thời khi máy hoạt động, càng nhiều RAM thì xử lý đa nhiệm càng tốt.",
-                            TenDanhMuc = "RAM (Bộ nhớ tạm)"
+                            TenDanhMuc = "RAM (Bộ nhớ tạm)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000004"),
                             MoTa = "Lưu trữ hệ điều hành, phần mềm, dữ liệu người dùng.",
-                            TenDanhMuc = "Ổ cứng (SSD/HDD)"
+                            TenDanhMuc = "Ổ cứng (SSD/HDD)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000005"),
                             MoTa = "Cung cấp điện năng cho toàn bộ hệ thống.",
-                            TenDanhMuc = "Nguồn (PSU)"
+                            TenDanhMuc = "Nguồn (PSU)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000006"),
                             MoTa = "Bảo vệ linh kiện, hỗ trợ tản nhiệt, định hình hệ thống.",
-                            TenDanhMuc = "Case (Vỏ máy tính)"
+                            TenDanhMuc = "Case (Vỏ máy tính)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000007"),
                             MoTa = "Dùng cho xử lý đồ họa, gaming, thiết kế, dựng phim. Một số CPU đã tích hợp GPU sẵn.",
-                            TenDanhMuc = "Card đồ họa (GPU)"
+                            TenDanhMuc = "Card đồ họa (GPU)",
+                            TrangThai = true
                         },
                         new
                         {
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000008"),
                             MoTa = "Có thể là tản nhiệt khí hoặc nước, dùng cho CPU hoặc cả hệ thống.",
-                            TenDanhMuc = "Tản nhiệt (Cooling)"
+                            TenDanhMuc = "Tản nhiệt (Cooling)",
+                            TrangThai = true
                         });
                 });
 
@@ -224,6 +238,9 @@ namespace F4_API.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("TrangThai")
+                        .HasColumnType("bit");
+
                     b.HasKey("ThuocTinh");
 
                     b.HasIndex("DanhMucId");
@@ -236,86 +253,99 @@ namespace F4_API.Migrations
                             ThuocTinh = new Guid("11111111-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000001"),
                             DonVi = "Nhân",
-                            TenThuocTinh = "Số nhân"
+                            TenThuocTinh = "Số nhân",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("11111111-0000-0000-0000-000000000002"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000001"),
                             DonVi = "Luồng",
-                            TenThuocTinh = "Số luồng"
+                            TenThuocTinh = "Số luồng",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("11111111-0000-0000-0000-000000000003"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000001"),
                             DonVi = "GHz",
-                            TenThuocTinh = "Xung nhịp"
+                            TenThuocTinh = "Xung nhịp",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("22222222-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            TenThuocTinh = "Socket"
+                            TenThuocTinh = "Socket",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("22222222-0000-0000-0000-000000000002"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000002"),
-                            TenThuocTinh = "Chipset"
+                            TenThuocTinh = "Chipset",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("33333333-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000003"),
                             DonVi = "GB",
-                            TenThuocTinh = "Dung lượng"
+                            TenThuocTinh = "Dung lượng",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("33333333-0000-0000-0000-000000000002"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000003"),
                             DonVi = "MHz",
-                            TenThuocTinh = "Bus"
+                            TenThuocTinh = "Bus",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("44444444-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000004"),
-                            TenThuocTinh = "Loại"
+                            TenThuocTinh = "Loại",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("44444444-0000-0000-0000-000000000002"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000004"),
                             DonVi = "GB",
-                            TenThuocTinh = "Dung lượng"
+                            TenThuocTinh = "Dung lượng",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("55555555-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000005"),
                             DonVi = "W",
-                            TenThuocTinh = "Công suất"
+                            TenThuocTinh = "Công suất",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("66666666-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000006"),
-                            TenThuocTinh = "Loại vỏ"
+                            TenThuocTinh = "Loại vỏ",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("77777777-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000007"),
                             DonVi = "GB",
-                            TenThuocTinh = "Dung lượng VRAM"
+                            TenThuocTinh = "Dung lượng VRAM",
+                            TrangThai = true
                         },
                         new
                         {
                             ThuocTinh = new Guid("88888888-0000-0000-0000-000000000001"),
                             DanhMucId = new Guid("00000000-0000-0000-0000-000000000008"),
-                            TenThuocTinh = "Loại tản"
+                            TenThuocTinh = "Loại tản",
+                            TrangThai = true
                         });
                 });
 
@@ -786,9 +816,9 @@ namespace F4_API.Migrations
                             Email = "admin@shop.com",
                             GioiTinh = false,
                             HoVaTen = "Nguyễn Văn Quản Trị",
-                            NgayCapNhatCuoiCung = new DateTime(2025, 7, 2, 23, 13, 21, 668, DateTimeKind.Local).AddTicks(6606),
+                            NgayCapNhatCuoiCung = new DateTime(2025, 7, 2, 22, 43, 15, 589, DateTimeKind.Local).AddTicks(8038),
                             NgaySinh = new DateTime(1995, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            NgayTao = new DateTime(2025, 7, 2, 23, 13, 21, 668, DateTimeKind.Local).AddTicks(6605),
+                            NgayTao = new DateTime(2025, 7, 2, 22, 43, 15, 589, DateTimeKind.Local).AddTicks(8037),
                             Sdt = "0987654321",
                             TaiKhoanId = new Guid("99999999-9999-9999-9999-999999999999"),
                             TrangThai = true
@@ -843,7 +873,7 @@ namespace F4_API.Migrations
                         new
                         {
                             TaiKhoanId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            NgayTaoTaiKhoan = new DateTime(2025, 7, 2, 23, 13, 21, 668, DateTimeKind.Local).AddTicks(6567),
+                            NgayTaoTaiKhoan = new DateTime(2025, 7, 2, 22, 43, 15, 589, DateTimeKind.Local).AddTicks(8000),
                             Password = "admin123",
                             Username = "admin"
                         });

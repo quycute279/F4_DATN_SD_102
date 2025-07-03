@@ -12,15 +12,14 @@ using F4_API.Models.DTO;
 
 namespace F4_API.Controllers
 {
-    //huhuhuhu
 
     [Route("api/[controller]")]
     [ApiController]
-    public class LinhKienController : ControllerBase
+    public class LinhKiensController : ControllerBase
     {
         private readonly ILinhKienRepository _repository;
 
-        public LinhKienController(ILinhKienRepository repository)
+        public LinhKiensController(ILinhKienRepository repository)
         {
             _repository = repository;
         }
@@ -62,7 +61,7 @@ namespace F4_API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Lỗi khi lấy giày: {ex.Message}");
+                return StatusCode(500, $"Lỗi khi lấy sản phẩm: {ex.Message}");
             }
         }
 

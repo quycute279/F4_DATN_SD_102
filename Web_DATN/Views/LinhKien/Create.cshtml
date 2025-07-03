@@ -1,74 +1,82 @@
-﻿@model Web_DATN.ViewModels.LinhKienFullViewModel
+﻿//
+@model Web_DATN.ViewModels.LinhKienFullViewModel
+
 @{
-    ViewData["Title"] = "Tạo mới Linh Kiện";
+    ViewData["Title"] = "Thêm linh kiện mới";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="mb-4">@ViewData["Title"]</h2>
 
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="TenLinhKien"></label>
-        <input asp-for="TenLinhKien" class="form-control" />
-        <span asp-validation-for="TenLinhKien" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Gia"></label>
-        <input asp-for="Gia" class="form-control" />
-        <span asp-validation-for="Gia" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="MoTa"></label>
-        <textarea asp-for="MoTa" class="form-control"></textarea>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="TrangThai"></label>
-        <select asp-for="TrangThai" class="form-control">
-            <option value="true">Hiển thị</option>
-            <option value="false">Ẩn</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DanhMucId">Danh mục</label>
-        <select asp-for="DanhMucId" class="form-control" asp-items="Model.DanhMucs"></select>
-        <span asp-validation-for="DanhMucId" class="text-danger"></span>
-    </div>
-
-    <h4>Chi tiết thuộc tính</h4>
-    <div id="chiTietContainer">
-        @for (int i = 0; i < Model.ThuocTinhs.Count; i++)
-        {
-            <div class="border p-3 mb-2">
-                <div class="form-group">
-                    <label>Thuộc tính</label>
-                    <select name="ThuocTinhs[@i].ThuocTinhId" class="form-control"
-                            asp-items="Model.ThuocTinhs[@i].DanhSachThuocTinh"></select>
-                </div>
-                <div class="form-group">
-                    <label>Giá trị</label>
-                    <input name="ThuocTinhs[@i].GiaTri" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <input name="ThuocTinhs[@i].MoTa" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái</label>
-                    <select name="ThuocTinhs[@i].TrangThai" class="form-control">
-                        <option value="true">Hiển thị</option>
-                        <option value="false">Ẩn</option>
-                    </select>
-                </div>
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            <div class="mb-3">
+                <label asp-for="TenLinhKien" class="form-label">Tên linh kiện</label>
+                <input asp-for="TenLinhKien" class="form-control" />
+                <span asp-validation-for="TenLinhKien" class="text-danger"></span>
             </div>
-        }
-    </div>
 
-    <button type="submit" class="btn btn-success">Tạo mới</button>
-</form>
+            <div class="mb-3">
+                <label asp-for="DanhMucId" class="form-label">Danh mục</label>
+                <select asp-for="DanhMucId" class="form-select" asp-items="ViewBag.DanhMucs" id="DanhMucId">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
+                <span asp-validation-for="DanhMucId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Gia" class="form-label">Giá</label>
+                <input asp-for="Gia" class="form-control" type="number" step="0.01" />
+                <span asp-validation-for="Gia" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MoTa" class="form-label">Mô tả</label>
+                <textarea asp-for="MoTa" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="MoTa" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="TrangThai" class="form-label">Trạng thái</label>
+                <select asp-for="TrangThai" class="form-select">
+                    <option value="true">Hiển thị</option>
+                    <option value="false">Ẩn</option>
+                </select>
+                <span asp-validation-for="TrangThai" class="text-danger"></span>
+            </div>
+
+            <div id="thuocTinhContainer">
+            </div>
+
+            <div class="d-flex justify-content-start gap-2">
+                <button type="submit" class="btn btn-success">Lưu</button>
+                <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+            </div>
+        </form>
+    </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $('#DanhMucId').change(function () {
+            var danhMucId = $(this).val();
+            $('#thuocTinhContainer').empty();
+
+            if (danhMucId) {
+                $.get('/LinhKien/GetThuocTinhsByDanhMuc?danhMucId=' + danhMucId, function (data) {
+                    data.forEach((t, index) => {
+                        let html = `
+                            <div class="mb-3">
+                                <label class="form-label">${t.tenThuocTinh} (${t.donVi || ''})</label>
+                                <input type="hidden" name="ThuocTinhs[${index}].ThuocTinhId" value="${t.thuocTinh}" />
+                                <input type="text" name="ThuocTinhs[${index}].GiaTri" class="form-control" />
+                                <input type="hidden" name="ThuocTinhs[${index}].TrangThai" value="true" />
+                            </div>`;
+                        $('#thuocTinhContainer').append(html);
+                    });
+                });
+            }
+        });
+    </script>
 }

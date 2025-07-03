@@ -51,5 +51,13 @@ namespace F4_API.Repository
             await _context.SaveChangesAsync();
         }
     }
-}
+    //
+    public async Task<List<DanhMuc_LinhKien_ThuocTinh>> GetThuocTinhsByDanhMucAsync(Guid danhMucId)
+    {
+        return await _context.DanhMuc_LinhKien_ThuocTinhs
+            .Where(t => t.DanhMucId == danhMucId)
+            .ToListAsync();
+    }
+    //
+    }
 }

@@ -9,5 +9,8 @@ namespace F4_API.Repository.IRepository
         Task CreateAsync(DanhMuc danhMuc);
         Task UpdateAsync(DanhMuc danhMuc);
         Task DeleteAsync(Guid id);
+        //
+        Task<List<DanhMuc_LinhKien_ThuocTinh>> GetThuocTinhsByDanhMucAsync(Guid danhMucId);
+        //
     }
 }

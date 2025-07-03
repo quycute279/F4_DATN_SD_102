@@ -71,7 +71,20 @@ namespace F4_API.Controllers
            await _repository.DeleteAsync(id);
             return Ok();
         }
+        [HttpGet("{danhMucId}/thuoc-tinhs")]
+        public async Task<IActionResult> GetThuocTinhsByDanhMuc(Guid danhMucId)
+        {
+            var thuocTinhs = await _repository.GetThuocTinhsByDanhMucAsync(danhMucId);
 
-       
+            var result = thuocTinhs.Select(t => new
+            {
+                t.ThuocTinh,
+                t.TenThuocTinh,
+                t.DonVi
+            });
+
+            return Ok(result);
+        }
+
     }
 }

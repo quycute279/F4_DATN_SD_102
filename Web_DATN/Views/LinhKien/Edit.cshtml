@@ -1,0 +1,81 @@
+﻿@model F4_API.Models.LinhKien
+
+@{
+    ViewData["Title"] = "Sửa linh kiện";
+    var danhMucs = ViewBag.DanhMucs as SelectList;
+    var thuocTinhs = ViewBag.ThuocTinhs as List<F4_API.Models.DanhMuc_LinhKien_ThuocTinh>;
+}
+
+<h2>Sửa linh kiện</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="LkId" />
+
+    <div class="mb-3">
+        <label asp-for="TenLinhKien" class="form-label"></label>
+        <input asp-for="TenLinhKien" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="DanhMucId" class="form-label">Danh mục</label>
+        <select asp-for="DanhMucId" class="form-select" asp-items="danhMucs" onchange="loadThuocTinhs(this.value)">
+            <option value="">-- Chọn danh mục --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Gia" class="form-label"></label>
+        <input asp-for="Gia" class="form-control" type="number" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="MoTa" class="form-label"></label>
+        <textarea asp-for="MoTa" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TrangThai" class="form-label">Trạng thái</label>
+        <select asp-for="TrangThai" class="form-select">
+            <option value="true">Hiển thị</option>
+            <option value="false">Ẩn</option>
+        </select>
+    </div>
+
+    <div id="thuocTinhContainer">
+        @if (thuocTinhs != null)
+        {
+            foreach (var tt in thuocTinhs)
+            {
+                <div class="mb-2">
+                    <label>@tt.TenThuocTinh (@tt.DonVi)</label>
+                    <input type="text" name="ChiTiets[@tt.ThuocTinh].GiaTri" class="form-control" />
+                </div>
+            }
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
+
+@section Scripts {
+    <script>
+        function loadThuocTinhs(danhMucId) {
+            if (!danhMucId) return;
+            fetch(`/LinhKien/GetThuocTinhsByDanhMuc?danhMucId=${danhMucId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('thuocTinhContainer');
+                    container.innerHTML = '';
+                    data.forEach(tt => {
+                        container.innerHTML += `
+                            <div class="mb-2">
+                                <label>${tt.tenThuocTinh} (${tt.donVi ?? ''})</label>
+                                <input type="text" name="ChiTiets[${tt.thuocTinh}].GiaTri" class="form-control" />
+                            </div>
+                        `;
+                    });
+                });
+        }
+    </script>
+}
