@@ -84,7 +84,7 @@
                 <ul class="nav flex-column">
                     <nav>
                         <a class="navbar-brand">
-                            <img src="~/img/Logo.png" alt="Poly Food" class="nav-logo" />
+                            <img src="~/img/logo-new.png" alt="Poly Food" class="nav-logo" />
                         </a>
                     </nav>
                     <li class="nav-item p-3">
@@ -93,7 +93,7 @@
                         </a>
                     </li>
                     <li class="nav-item p-3">
-                        <a class="nav-link" href="@Url.Action("QuanLySanPham", "SanPham")">
+                        <a class="nav-link" href="@Url.Action("QuanLySanPham", "LinhKien")">
                             <i class="fas fa-cogs p-2"></i> Quản lý Sản phẩm
                         </a>
                     </li>
@@ -124,7 +124,7 @@
                 <ul class="nav flex-column">
                     <nav>
                         <a class="navbar-brand">
-                            <img src="~/img/Logo.png" alt="Poly Food" class="nav-logo" />
+                            <img src="~/img/logo-new.png" alt="Poly Food" class="nav-logo" />
                         </a>
                     </nav>
                     <li class="nav-item p-3">
@@ -145,20 +145,24 @@
                 <ul class="nav flex-column">
                     <nav>
                         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                            <img src="~/img/Logo.png" alt="Poly Food" class="nav-logo" />
+                            <img src="~/img/logo-new.png" alt="Poly Food" class="nav-logo" />
                         </a>
                     </nav>
 
                     @if (danhMucList != null)
                     {
-                        foreach (var dm in danhMucList)
+                        @foreach (var dm in ViewBag.DanhMucList)
                         {
                             <li class="nav-item p-2">
-                                <a class="nav-link" asp-controller="SanPham" asp-action="Index" asp-route-loaiSanPham="@dm.DanhMucId">
+                                <a class="nav-link"
+                                   asp-controller="LinhKien"
+                                   asp-action="Index"
+                                   asp-route-DanhMucId="@dm.DanhMucId">
                                     <ion-icon name="albums-outline"></ion-icon> @dm.TenDanhMuc
                                 </a>
                             </li>
                         }
+
                     }
 
                     <li class="nav-item p-2">
@@ -174,20 +178,24 @@
                 <ul class="nav flex-column">
                     <nav>
                         <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                            <img src="~/img/Logo.png" alt="Poly Food" class="nav-logo" />
+                            <img src="~/img/logo-new.png" alt="Poly Food" class="nav-logo" />
                         </a>
                     </nav>
 
                     @if (ViewBag.DanhMucList != null)
                     {
-                        foreach (var dm in ViewBag.DanhMucList)
+                        @foreach (var dm in ViewBag.DanhMucList)
                         {
                             <li class="nav-item p-2">
-                                <a class="nav-link" asp-controller="SanPham" asp-action="Index" asp-route-loaiSanPham="@dm.DanhMucId">
+                                <a class="nav-link"
+                                   asp-controller="LinhKien"
+                                   asp-action="Index"
+                                   asp-route-DanhMucId="@dm.DanhMucId">
                                     <ion-icon name="albums-outline"></ion-icon> @dm.TenDanhMuc
                                 </a>
                             </li>
                         }
+
                     }
 
                     <li class="nav-item p-2">

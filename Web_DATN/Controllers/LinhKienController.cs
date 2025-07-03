@@ -19,9 +19,49 @@ namespace Web_DATN.Controllers
         {
             _httpClient = httpClient.CreateClient("LK");
         }
+        public async Task<IActionResult> Index(Guid? DanhMucId, int pageNumber = 1, string? timkiem = null)
+        {
+            int pageSize = 8; // Số lượng linh kiện mỗi trang
 
-        // Hiển thị danh sách linh kiện
-        public async Task<IActionResult> Index(Guid? loaiSanPham)
+            // Gọi API để lấy toàn bộ linh kiện
+            var linhKiens = await _httpClient.GetFromJsonAsync<List<LinhKien>>("LinhKiens");
+
+            // Lọc theo DanhMucId nếu có
+            if (DanhMucId.HasValue)
+            {
+                linhKiens = linhKiens.Where(x => x.DanhMucId == DanhMucId).ToList();
+            }
+
+            // Lọc theo từ khóa tìm kiếm nếu có
+            if (!string.IsNullOrEmpty(timkiem))
+            {
+                linhKiens = linhKiens
+                    .Where(x => x.TenLinhKien != null && x.TenLinhKien.Contains(timkiem, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            // Phân trang
+            int totalItems = linhKiens.Count;
+            var itemsToShow = linhKiens
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            // Gửi ViewBag để phân trang
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            ViewBag.TimKiem = timkiem;
+            ViewBag.DanhMucId = DanhMucId;
+
+            // Gửi danh sách danh mục cho menu
+            var danhMucs = await _httpClient.GetFromJsonAsync<List<DanhMuc>>("DanhMucs");
+            ViewBag.DanhMucList = danhMucs;
+
+            return View(itemsToShow);
+        }
+
+
+        public async Task<IActionResult> QuanLySanPham(Guid? DanhMucId)
         {
             var linhKiens = await _httpClient.GetFromJsonAsync<List<LinhKien>>("LinhKiens");
             var danhMucs = await _httpClient.GetFromJsonAsync<List<DanhMuc>>("DanhMucs");
@@ -83,10 +123,11 @@ namespace Web_DATN.Controllers
         {
             if (ModelState.IsValid)
             {
+                linhKien.TrangThai = true; 
                 var response = await _httpClient.PostAsJsonAsync("LinhKiens", linhKien);
                 if (response.IsSuccessStatusCode)
                 {
-                    return RedirectToAction("Index", "LinhKien");
+                    return RedirectToAction("QuanLySanPham", "LinhKien");
                 }
             }
 

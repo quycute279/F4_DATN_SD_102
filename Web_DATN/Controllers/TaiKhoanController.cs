@@ -59,7 +59,7 @@ namespace Web_DATN.Controllers
                     HttpContext.Session.SetString("Role", "KhachHang");
                     HttpContext.Session.SetString("MaKhachHang", loginResponse.Username);
                     HttpContext.Session.SetString("TenKhachHang", loginResponse.Username);
-                    return RedirectToAction("DangKyNhanVien", "TaiKhoan");
+                    return RedirectToAction("Index", "Home");
                 }
                 else if (loginResponse.Role == "Admin")
                 {
