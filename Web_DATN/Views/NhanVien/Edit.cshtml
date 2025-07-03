@@ -1,0 +1,13 @@
+﻿@model F4_API.Models.NhanVien
+@{
+    ViewData["Title"] = "Chỉnh sửa nhân viên";
+}
+
+<h2>Chỉnh sửa nhân viên</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="NhanVienId" />
+
+    @* Dùng lại giống form Create *@
+    <partial name="Create" model="Model" />
+</form>

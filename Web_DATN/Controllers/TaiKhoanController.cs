@@ -232,7 +232,6 @@ namespace Web_DATN.Controllers
                 TaiKhoanId = taiKhoan.TaiKhoanId
             };
 
-            // Gửi API tạo tài khoản trước
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7183");
@@ -257,16 +256,13 @@ namespace Web_DATN.Controllers
                 }
             }
 
-            return RedirectToAction("Login");
+            return RedirectToAction("Index", "NhanVien");
         }
 
         [HttpGet]
         public IActionResult Logout()
         {
-            // Xóa toàn bộ session
             HttpContext.Session.Clear();
-
-            // Chuyển về trang đăng nhập
             return RedirectToAction("Login", "TaiKhoan");
         }
 

@@ -1,0 +1,46 @@
+﻿@model List<F4_API.Models.KhachHang>
+
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+}
+
+<h2>Danh sách khách hàng</h2>
+
+<a asp-action="Create" class="btn btn-success mb-2">+ Thêm khách hàng</a>
+
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Tên khách hàng</th>
+            <th>Email</th>
+            <th>SĐT</th>
+            <th>Giới tính</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var kh in Model)
+        {
+            <tr>
+                <td>@kh.TenKhachHang</td>
+                <td>@kh.Email</td>
+                <td>@kh.Sdt</td>
+                <td>@(kh.GioiTinh ? "Nam" : "Nữ")</td>
+                <td>@(kh.TrangThai ? "Hoạt động" : "Khóa")</td>
+                <td>@kh.NgayTao.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@kh.KhachHangId" class="btn btn-sm btn-primary">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@kh.KhachHangId" class="btn btn-sm btn-danger" onclick="return confirm('Xác nhận xóa?')">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

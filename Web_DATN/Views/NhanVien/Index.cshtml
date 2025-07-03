@@ -1,0 +1,42 @@
+﻿@model List<F4_API.Models.NhanVien>
+
+@{
+    ViewData["Title"] = "Danh sách nhân viên";
+}
+
+<h2>Danh sách nhân viên</h2>
+
+<a asp-action="DangKyNhanVien" asp-controller="TaiKhoan"class="btn btn-success mb-3">+ Thêm nhân viên</a>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Họ và tên</th>
+            <th>Giới tính</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Ngày sinh</th>
+            <th>Trạng thái</th>
+            <th>Ngày tạo</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var nv in Model)
+        {
+            <tr>
+                <td>@nv.HoVaTen</td>
+                <td>@(nv.GioiTinh ? "Nam" : "Nữ")</td>
+                <td>@nv.Sdt</td>
+                <td>@nv.Email</td>
+                <td>@nv.NgaySinh?.ToString("dd/MM/yyyy")</td>
+                <td>@(nv.TrangThai ? "Hoạt động" : "Ngừng")</td>
+                <td>@nv.NgayTao?.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@nv.NhanVienId" class="btn btn-primary btn-sm">Sửa</a>
+                    <a asp-action="Delete" asp-route-id="@nv.NhanVienId" class="btn btn-danger btn-sm">Xoá</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

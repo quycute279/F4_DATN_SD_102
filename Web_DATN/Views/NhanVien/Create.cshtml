@@ -1,0 +1,55 @@
+﻿@model F4_API.Models.NhanVien
+@{
+    ViewData["Title"] = "Thêm nhân viên";
+}
+
+<h2>Thêm nhân viên</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="HoVaTen"></label>
+        <input asp-for="HoVaTen" class="form-control" />
+        <span asp-validation-for="HoVaTen" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="GioiTinh"></label>
+        <select asp-for="GioiTinh" class="form-control">
+            <option value="true">Nam</option>
+            <option value="false">Nữ</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Sdt"></label>
+        <input asp-for="Sdt" class="form-control" />
+        <span asp-validation-for="Sdt" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DiaChi"></label>
+        <input asp-for="DiaChi" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NgaySinh"></label>
+        <input asp-for="NgaySinh" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TrangThai"></label>
+        <select asp-for="TrangThai" class="form-control">
+            <option value="true">Hoạt động</option>
+            <option value="false">Ngừng</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a asp-action="Index" class="btn btn-secondary">Hủy</a>
+</form>
